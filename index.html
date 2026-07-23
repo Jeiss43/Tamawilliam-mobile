@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Tamawilliam 2.0 - Édition Mobile</title>
+  <!-- Police rétro 8-bit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="mobile-app">
+
+    <!-- BARRE EN-TÊTE FIXE ET COMPACTE -->
+    <header class="app-header">
+      <div class="header-brand">
+        <span class="power-light" id="power-light"></span>
+        <span class="brand-title">TAMAWILLIAM <span class="brand-ver">2.0</span></span>
+      </div>
+      <div class="header-target">🎯 Coucouron</div>
+    </header>
+
+    <!-- ÉCRAN DU JEU LCD (Pinné en haut, parfaitement visible) -->
+    <section class="game-screen-wrapper">
+      <div class="gbc-screen-bezel">
+        <div class="gbc-screen-lens">
+          <div class="lcd-screen" id="lcd-screen">
+            <!-- Canevas du jeu (résolution 320x240 pixels rétro) -->
+            <canvas id="game-canvas" width="320" height="240">Jeu virtuel Tamawilliam - William l'Ardéchois</canvas>
+            
+            <!-- Pop-up de choix interactif (Manger / Refuser la caillette) -->
+            <div id="choice-overlay" class="hidden">
+              <div class="choice-title" id="choice-label">Caillette ?</div>
+              <div class="choice-buttons">
+                <button class="choice-btn accept" id="choice-accept">Manger (A)</button>
+                <button class="choice-btn decline" id="choice-decline">Refuser (B)</button>
+              </div>
+            </div>
+
+            <!-- Superposition pour le texte d'alerte rétro -->
+            <div id="lcd-dialog" class="hidden"></div>
+            
+            <!-- Effets rétro -->
+            <div class="scanlines"></div>
+            <div class="lcd-grid"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- TABLEAU DES JAUGES COMPACT RÉTRO -->
+    <section class="gauges-summary">
+      <div class="gauge-card">
+        <div class="gauge-header">
+          <span class="gauge-lbl">🥩 Faim</span>
+        </div>
+        <div class="gauge-bar"><div class="gauge-fill" id="fill-food" style="width: 40%"></div></div>
+      </div>
+      <div class="gauge-card">
+        <div class="gauge-header">
+          <span class="gauge-lbl">🍺 Soif</span>
+        </div>
+        <div class="gauge-bar"><div class="gauge-fill" id="fill-drink" style="width: 40%"></div></div>
+      </div>
+      <div class="gauge-card">
+        <div class="gauge-header">
+          <span class="gauge-lbl">🎵 Moral</span>
+        </div>
+        <div class="gauge-bar"><div class="gauge-fill" id="fill-moral" style="width: 40%"></div></div>
+      </div>
+      <div class="gauge-card">
+        <div class="gauge-header">
+          <span class="gauge-lbl">⛲ Santé</span>
+        </div>
+        <div class="gauge-bar"><div class="gauge-fill" id="fill-health" style="width: 40%"></div></div>
+      </div>
+    </section>
+
+    <!-- SECTION DES ACTIONS TACTILES OPTIMISÉES POUR POUCE -->
+    <main class="action-section">
+      <h2 class="section-title">ACTIONS RAPIDES</h2>
+      <div class="action-grid">
+        <button class="action-card" data-action="feed" aria-label="Caillette">
+          <span class="action-icon">🥩</span>
+          <div class="action-info">
+            <span class="action-name">Caillette</span>
+            <span class="action-desc">Nourrir William</span>
+          </div>
+        </button>
+        
+        <button class="action-card" data-action="marquisette" aria-label="Marquisette">
+          <span class="action-icon">🍾</span>
+          <div class="action-info">
+            <span class="action-name">Marquisette</span>
+            <span class="action-desc">Hydrate / Alcool</span>
+          </div>
+        </button>
+        
+        <button class="action-card" data-action="music" aria-label="Jean Ferrat">
+          <span class="action-icon">🎵</span>
+          <div class="action-info">
+            <span class="action-name">Jean Ferrat</span>
+            <span class="action-desc">Chanter 8-bit</span>
+          </div>
+        </button>
+        
+        <button class="action-card" data-action="heal" aria-label="Thermes Vals">
+          <span class="action-icon">⛲</span>
+          <div class="action-info">
+            <span class="action-name">Thermes Vals</span>
+            <span class="action-desc">Cure de soin</span>
+          </div>
+        </button>
+        
+        <button class="action-card" data-action="sleep" aria-label="Sieste">
+          <span class="action-icon">💤</span>
+          <div class="action-info">
+            <span class="action-name">Faire Sieste</span>
+            <span class="action-desc">Repos complet</span>
+          </div>
+        </button>
+        
+        <button class="action-card" data-action="clean" aria-label="Café">
+          <span class="action-icon">☕</span>
+          <div class="action-info">
+            <span class="action-name">Café Corsé</span>
+            <span class="action-desc">Dessoûler</span>
+          </div>
+        </button>
+        
+        <button class="action-card action-card-full" data-action="status" aria-label="Statistiques">
+          <span class="action-icon">📊</span>
+          <div class="action-info">
+            <span class="action-name">Statistiques</span>
+            <span class="action-desc">Voir les détails de voyage</span>
+          </div>
+        </button>
+      </div>
+    </main>
+
+    <!-- PANNEAU DES COMMANDES GAMEBOY TACTILES (Bas d'écran) -->
+    <footer class="pad-footer">
+      <div class="pad-container">
+        <!-- Croix directionnelle -->
+        <div class="dpad">
+          <div class="dpad-btn up" id="dpad-up"></div>
+          <div class="dpad-btn left" id="dpad-left"></div>
+          <div class="dpad-btn right" id="dpad-right"></div>
+          <div class="dpad-btn down" id="dpad-down"></div>
+          <div class="dpad-center"></div>
+        </div>
+
+        <!-- System buttons central -->
+        <div class="system-buttons">
+          <div class="sys-btn-wrapper">
+            <button class="oval-btn" id="btn-select" aria-label="Select"></button>
+            <span class="sys-label">SEL</span>
+          </div>
+          <div class="sys-btn-wrapper">
+            <button class="oval-btn" id="btn-start" aria-label="Start"></button>
+            <span class="sys-label">START</span>
+          </div>
+        </div>
+
+        <!-- Action Buttons A / B -->
+        <div class="action-buttons">
+          <div class="btn-group">
+            <button class="round-btn btn-b" id="btn-b" aria-label="Bouton B : Refuser"></button>
+            <span class="btn-label-gbc">B</span>
+          </div>
+          <div class="btn-group">
+            <button class="round-btn btn-a" id="btn-a" aria-label="Bouton A : Valider / Manger"></button>
+            <span class="btn-label-gbc">A</span>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
