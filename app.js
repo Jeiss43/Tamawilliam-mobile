@@ -488,35 +488,37 @@ function drawBalDeCoucouron(frame) {
   ctx.fillStyle = '#ffb703';
   ctx.strokeStyle = '#ffffff';
   ctx.lineWidth = 2;
-  ctx.fillRect(60, 30, 200, 25);
-  ctx.strokeRect(60, 30, 200, 25);
+  ctx.fillRect(40, 20, 240, 30);
+  ctx.strokeRect(40, 20, 240, 30);
   
   ctx.fillStyle = '#000000';
-  ctx.font = '7px "Press Start 2P"';
+  ctx.font = 'bold 11px "Press Start 2P"';
   ctx.textAlign = 'center';
-  ctx.fillText("BAL DE COUCOURON 🍾", CANVAS_WIDTH / 2, 46);
+  ctx.textBaseline = 'middle';
+  ctx.fillText("BAL DE COUCOURON 🍾", Math.round(CANVAS_WIDTH / 2), 35);
+  ctx.textBaseline = 'alphabetic'; // reset
 
   // Message de félicitation humoristique en bas
   ctx.fillStyle = 'rgba(11, 11, 20, 0.95)';
   ctx.strokeStyle = '#ffb703';
   ctx.lineWidth = 2;
-  ctx.fillRect(10, 160, CANVAS_WIDTH - 20, 72);
-  ctx.strokeRect(10, 160, CANVAS_WIDTH - 20, 72);
+  ctx.fillRect(10, 150, CANVAS_WIDTH - 20, 82);
+  ctx.strokeRect(10, 150, CANVAS_WIDTH - 20, 82);
 
   ctx.fillStyle = '#ffb703';
-  ctx.font = '7px "Press Start 2P"';
+  ctx.font = 'bold 10px "Press Start 2P"';
   ctx.textAlign = 'center';
-  ctx.fillText("🏆 VICTOIRE ARDECHOISE SUPREME ! 🏆", CANVAS_WIDTH / 2, 174);
+  ctx.fillText("🏆 VICTOIRE ARDECHOISE ! 🏆", Math.round(CANVAS_WIDTH / 2), 168);
   
   ctx.fillStyle = '#ffffff';
-  ctx.font = '5.5px "Press Start 2P"';
-  ctx.fillText("William danse & boit de la Marquisette au Bal !", CANVAS_WIDTH / 2, 187);
-  ctx.fillText("Il a terrassé la caillette drômoise & la Burle !", CANVAS_WIDTH / 2, 198);
-  ctx.fillText("La fête bat son plein à Coucouron ! 🍾🎶", CANVAS_WIDTH / 2, 209);
+  ctx.font = '8px "Press Start 2P"';
+  ctx.fillText("William danse & boit de la Marquisette au Bal !", Math.round(CANVAS_WIDTH / 2), 185);
+  ctx.fillText("Il a terrassé la caillette drômoise & la Burle !", Math.round(CANVAS_WIDTH / 2), 198);
+  ctx.fillText("La fête bat son plein à Coucouron ! 🍾🎶", Math.round(CANVAS_WIDTH / 2), 211);
   
   ctx.fillStyle = '#e9c46a';
-  ctx.font = '6px "Press Start 2P"';
-  ctx.fillText("PRESSEZ START (ENTREE) POUR REJOUER", CANVAS_WIDTH / 2, 224);
+  ctx.font = '8px "Press Start 2P"';
+  ctx.fillText("APPUYEZ SUR ENTREE POUR REJOUER", Math.round(CANVAS_WIDTH / 2), 226);
 }
 
 function drawCailletteFlash(frame) {
@@ -1116,23 +1118,65 @@ function drawPoopForestScene(frame) {
   ctx.fillStyle = '#081c15';
   ctx.fillRect(0, 180, CANVAS_WIDTH, 60);
 
-  // William accroupi derrière un arbre
-  ctx.save();
-  ctx.translate(145, 145);
-  ctx.rotate(0.2);
-  drawWilliam(-20, -15, 2.2, frame);
-  ctx.restore();
+  if (frame < 80) {
+    // William marche en se tenant le ventre
+    const walkX = Math.min(145, frame * 2);
+    const bob = Math.floor(Math.sin(frame * 0.3) * 3);
+    ctx.save();
+    drawWilliam(walkX - 20, 132 + bob, 2.2, frame);
+    // Mains sur le ventre
+    ctx.fillStyle = '#e63946'; // mains rouges de douleur
+    ctx.fillRect(walkX - 10, 154 + bob, 6, 4);
+    ctx.restore();
 
-  // Émoji caca et mouches
-  ctx.fillStyle = '#7f5539';
-  ctx.font = '16px serif';
-  ctx.fillText("💩", 185, 175);
+    ctx.fillStyle = '#ff85a1';
+    ctx.font = 'bold 6px "Press Start 2P"';
+    ctx.textAlign = 'center';
+    ctx.fillText("Vite... 🚽", walkX - 10, 122 + bob);
+  } else if (frame < 185) {
+    // William accroupi en train de pousser (tremble)
+    const shake = Math.sin(frame * 0.9) * 2;
+    ctx.save();
+    ctx.translate(145 + shake, 145);
+    ctx.rotate(0.25);
+    drawWilliam(-20, -15, 2.2, frame);
+    ctx.restore();
 
-  ctx.fillStyle = '#b08968';
-  for (let m = 0; m < 4; m++) {
-    const fx = 180 + Math.sin(frame * 0.3 + m) * 12;
-    const fy = 150 - (frame * 1.5 + m * 20) % 60;
-    ctx.fillRect(fx, fy, 2, 2);
+    // Effet d'effort (rougeur / sueur)
+    ctx.fillStyle = '#e63946';
+    ctx.font = 'bold 7px "Press Start 2P"';
+    ctx.textAlign = 'center';
+    ctx.fillText("POUSSE ! 😤", 145, 110);
+    
+    // Goutte de sueur
+    ctx.fillStyle = '#4cc9f0';
+    ctx.fillRect(150 + shake, 125, 2, 4);
+  } else {
+    // Il a fini ! Soulagement
+    ctx.save();
+    ctx.translate(145, 145);
+    ctx.rotate(0.2);
+    drawWilliam(-20, -15, 2.2, frame);
+    ctx.restore();
+
+    // Ouf
+    ctx.fillStyle = '#4cc9f0';
+    ctx.font = 'bold 8px "Press Start 2P"';
+    ctx.textAlign = 'center';
+    ctx.fillText("OUF... 😌", 145, 110);
+
+    // Émoji caca apparaît
+    ctx.fillStyle = '#7f5539';
+    ctx.font = '16px serif';
+    ctx.fillText("💩", 185, 175);
+
+    // Mouches
+    ctx.fillStyle = '#b08968';
+    for (let m = 0; m < 4; m++) {
+      const fx = 180 + Math.sin(frame * 0.3 + m) * 12;
+      const fy = 150 - ((frame - 185) * 1.5 + m * 20) % 60;
+      ctx.fillRect(fx, fy, 2, 2);
+    }
   }
 
   drawTopLeftBadge("Caca en forêt... 💩");
@@ -1456,12 +1500,14 @@ function handleCailletteChoice(accept) {
         state.needsThermesClean = true;
         state.poopForestActive = true;
         state.poopForestTimer = 300; // ~5s (coordonné avec le dialogue)
+        state.frame = 0; // Reset frame
         sound.playVomitSound();
         showDialog("Faim 100% ! William s'enfuit faire caca en forêt (+5 km) et doit aller aux Thermes !", 5000);
       } else {
         state.eatAnimationActive = true;
         state.eatAnimationTimer = 180; // ~3s
         state.eatAnimationType = 'A';
+        state.frame = 0; // Reset frame
         state.health = Math.min(100, state.health + 15);
         sound.playSuccess();
         showDialog("Miam ! Delicieuse caillette ardechoise ! 🥩", 3500);
@@ -1471,6 +1517,7 @@ function handleCailletteChoice(accept) {
       state.eatAnimationActive = true;
       state.eatAnimationTimer = 180; // ~3s
       state.eatAnimationType = 'D';
+      state.frame = 0; // Reset frame
       state.health = Math.max(10, state.health - 25);
       sound.playError();
       showDialog("Aïe ! Intoxique par le plastique dromois ! 🤮", 4000);
@@ -1493,6 +1540,7 @@ function triggerMarquisette() {
   if (state.drink >= 100) {
     state.vomitActive = true;
     state.vomitTimer = 180; // ~3s
+    state.frame = 0; // Reset frame
     state.drink = 30; // Chute après vomi
     state.health = Math.max(10, state.health - 15);
     sound.playVomitSound();
@@ -1500,6 +1548,7 @@ function triggerMarquisette() {
   } else {
     state.drinkAnimationActive = true;
     state.drinkAnimationTimer = 180; // ~3s
+    state.frame = 0; // Reset frame
     showDialog("La Marquisette coule a flot !", 3500);
   }
 }
@@ -1512,6 +1561,7 @@ function triggerMusic() {
   state.ferrat = Math.min(100, state.ferrat + 30);
   state.ferratAnimationActive = true;
   state.ferratAnimationTimer = 330; // ~5.5s (durée complète de la mélodie)
+  state.frame = 0; // Reset frame
   sound.playFerrat(); // Musique Jean Ferrat
   showDialog("Pourtant que la montagne est belle... 🎵", 5000);
 }
@@ -1523,6 +1573,7 @@ function triggerHeal() {
   }
   state.healAnimationActive = true;
   state.healAnimationTimer = 180; // ~3s
+  state.frame = 0; // Reset frame
   state.isPoisoned = false;
   state.health = Math.min(100, state.health + 40);
   
@@ -1541,8 +1592,10 @@ function triggerSleep() {
   state.isSleeping = true;
   state.sleepAnimationActive = true;
   state.sleepAnimationTimer = 180; // ~3s (directement l'animation dans le lit !)
+  state.frame = 0; // Reset frame
+  state.health = Math.min(100, state.health + 10);
   sound.beep(400, 0.3);
-  showDialog("William se met au lit pour une sieste recuperatrice ! 💤", 3500);
+  showDialog("William se met au lit pour une sieste recuperatrice ! Sante +10 ! 💤", 3500);
 }
 
 function triggerClean() {
@@ -1551,6 +1604,7 @@ function triggerClean() {
     state.isDrunk = false;
     state.coffeeAnimationActive = true;
     state.coffeeAnimationTimer = 180; // ~3s (animation rallongée)
+    state.frame = 0; // Reset frame
     sound.beep(600, 0.15);
     showDialog("Un grand cafe noir fait dessouler William !", 3500);
   } else {
@@ -1560,18 +1614,24 @@ function triggerClean() {
 }
 
 // --- ALÉAS HUMORISTIQUES V5 ---
+// --- ALÉAS HUMORISTIQUES V5 ---
 const humorEvents = [
   { id: "cyclistes", text: "William double des cyclistes de l'Ardechoise en marchant sans forcer.", icon: "🚴", type: "moral", value: 20, effectText: " Fierte ardechoise ! Moral +20 !" },
   { id: "sirop", text: "William trouve une bouteille de sirop de chataigne artisanale et la boit cul-sec.", icon: "🌰", type: "food_moral", value: { food: 20, moral: 10 }, effectText: " Faim +20, Moral +10 !" },
   { id: "drome_tong", text: "Un Dromois en tongue tente d'expliquer comment faire de la caillette.", icon: "🐐", type: "moral", value: -15, effectText: " William retient ses coups. Moral -15 !" },
   { id: "burle", text: "Le brouillard d'Ardeche (la Burle) se leve. William avance a l'aveugle.", icon: "🌾", type: "burle", value: -15, effectText: " Il tombe dans le fosse ! Sante -15, Detour +3 km !" },
   { id: "cochon", text: "William gagne le concours de cri de cochon a la foire de Coucouron.", icon: "🐖", type: "moral", value: 25, effectText: " Le public l'acclame ! Moral +25 !" },
-  // Nouveaux événements avec animations personnalisées
   { id: "sanglier", text: "William croise un sanglier egare et partage sa Marquisette. Il grimpe sur son dos !", icon: "🐗", type: "sanglier", value: { moral: 15, distance: -4.0 }, effectText: " Raccourci ! Moral +15, Distance -4 km !" },
   { id: "gps", text: "Un GPS dromois essaie de guider William vers Valence. Il le jette de rage !", icon: "📡", type: "gps", value: { moral: -20, distance: 5.0 }, effectText: " Colere ! Moral -20, Detour +5 km !" },
   { id: "picodon", text: "William tente de manger un vieux Picodon dur comme de la pierre.", icon: "🧀", type: "picodon", value: { food: 15, health: -10 }, effectText: " Aïe la dent ! Faim +15, Sante -10 !" },
   { id: "bogue", text: "Pendant sa sieste, une bogue de chataigne piquante tombe sur le nez de William.", icon: "🌳", type: "bogue", value: { health: -5, moral: -10 }, effectText: " Sursaut ! Sante -5, Moral -10 !" },
-  { id: "source", text: "William boit l'eau pure du Mont Gerbier-de-Jonc a la source de la Loire.", icon: "🌋", type: "source", value: { health: 25, drink: 20, distance: 2.0 }, effectText: " Purete ! Sante +25, Soif +20, Detour +2 km !" }
+  { id: "source", text: "William boit l'eau pure du Mont Gerbier-de-Jonc a la source de la Loire.", icon: "🌋", type: "source", value: { health: 25, drink: 20, distance: 2.0 }, effectText: " Purete ! Sante +25, Soif +20, Detour +2 km !" },
+  { id: "licorne", text: "William croise la mythique licorne ardechoise ! Elle le transporte dans les airs.", icon: "🦄", type: "licorne", value: { food: 15, drink: 15, moral: 15, health: 15, distance: -15.0 }, effectText: " Miracle ! Tous les niveaux +15, Raccourci -15 km !" },
+  { id: "facteur", text: "William emprunte le sentier escarpe du facteur historique.", icon: "🏃", type: "facteur", value: { distance: -4.0 }, effectText: " Raccourci ! Distance -4 km !" },
+  { id: "bouse", text: "William glisse accidentellement sur une bouse de vache fraiche.", icon: "🐄", type: "bouse", value: { health: -5, distance: -1.0 }, effectText: " Oups ! Sante -5, Raccourci -1 km !" },
+  { id: "montgolfiere", text: "William grimpe dans la nacelle d'une montgolfiere a Annonay.", icon: "🎈", type: "montgolfiere", value: { distance: -4.0 }, effectText: " Raccourci ! Distance -4 km !" },
+  { id: "sonic", text: "Sonic, le chien de William, est parti courir la gueuse. En courant apres lui, William trouve un raccourci.", icon: "🐕", type: "sonic", value: { distance: -3.0 }, effectText: " Raccourci ! Distance -3 km !" },
+  { id: "cles", text: "William a perdu ses cles ! Il doit faire demi-tour pour les retrouver au bistrot d'Annonay.", icon: "🔑", type: "cles", value: { moral: -15, distance: 3.0 }, effectText: " Tete en l'air ! Moral -15, Detour +3 km !" }
 ];
 
 function fillEventPool() {
@@ -1590,13 +1650,25 @@ function triggerRandomEvent() {
   if (!state.eventPool || state.eventPool.length === 0) {
     fillEventPool();
   }
-  const eventIndex = state.eventPool.shift();
-  const ev = humorEvents[eventIndex];
+  let eventIndex = state.eventPool.shift();
+  let ev = humorEvents[eventIndex];
+
+  // Si c'est la licorne mais qu'on est à <= 50 km restants, on la remet à la fin et on en prend un autre
+  if (ev.id === "licorne" && parseFloat(state.distance) <= 50.0) {
+    state.eventPool.push(eventIndex);
+    for (let i = 0; i < state.eventPool.length; i++) {
+      if (humorEvents[state.eventPool[i]].id !== "licorne") {
+        eventIndex = state.eventPool.splice(i, 1)[0];
+        ev = humorEvents[eventIndex];
+        break;
+      }
+    }
+  }
   
   if (ev.type === "moral") {
     state.ferrat = Math.max(0, Math.min(100, state.ferrat + ev.value));
   } else if (ev.type === "distance") {
-    state.distance += ev.value;
+    state.distance = Math.max(0, parseFloat(state.distance) + parseFloat(ev.value));
   } else if (ev.type === "health") {
     state.health = Math.max(0, Math.min(100, state.health + ev.value));
   } else if (ev.type === "drink") {
@@ -1606,13 +1678,13 @@ function triggerRandomEvent() {
     state.ferrat = Math.max(0, Math.min(100, state.ferrat + ev.value.moral));
   } else if (ev.type === "burle") {
     state.health = Math.max(0, Math.min(100, state.health + ev.value));
-    state.distance += 3.0;
+    state.distance = Math.max(0, parseFloat(state.distance) + 3.0);
   } else if (ev.type === "sanglier") {
     state.ferrat = Math.max(0, Math.min(100, state.ferrat + ev.value.moral));
-    state.distance = Math.max(0, state.distance + ev.value.distance);
+    state.distance = Math.max(0, parseFloat(state.distance) + parseFloat(ev.value.distance));
   } else if (ev.type === "gps") {
     state.ferrat = Math.max(0, Math.min(100, state.ferrat + ev.value.moral));
-    state.distance += ev.value.distance;
+    state.distance = Math.max(0, parseFloat(state.distance) + parseFloat(ev.value.distance));
   } else if (ev.type === "picodon") {
     state.food = Math.max(0, Math.min(100, state.food + ev.value.food));
     state.health = Math.max(0, Math.min(100, state.health + ev.value.health));
@@ -1622,12 +1694,34 @@ function triggerRandomEvent() {
   } else if (ev.type === "source") {
     state.health = Math.max(0, Math.min(100, state.health + ev.value.health));
     state.drink = Math.max(0, Math.min(100, state.drink + ev.value.drink));
-    state.distance += ev.value.distance;
+    state.distance = Math.max(0, parseFloat(state.distance) + parseFloat(ev.value.distance));
+  } else if (ev.type === "licorne") {
+    state.food = Math.min(100, state.food + ev.value.food);
+    state.drink = Math.min(100, state.drink + ev.value.drink);
+    // Capping faim et soif pour éviter de déclencher les deux catastrophes en même temps
+    if (state.food >= 100 && state.drink >= 100) {
+      state.drink = 95;
+    }
+    state.ferrat = Math.min(100, state.ferrat + ev.value.moral);
+    state.health = Math.min(100, state.health + ev.value.health);
+    state.distance = Math.max(0, parseFloat(state.distance) + parseFloat(ev.value.distance));
+  } else if (ev.type === "facteur") {
+    state.distance = Math.max(0, parseFloat(state.distance) + parseFloat(ev.value.distance));
+  } else if (ev.type === "bouse") {
+    state.health = Math.max(0, Math.min(100, state.health + ev.value.health));
+    state.distance = Math.max(0, parseFloat(state.distance) + parseFloat(ev.value.distance));
+  } else if (ev.type === "montgolfiere") {
+    state.distance = Math.max(0, parseFloat(state.distance) + parseFloat(ev.value.distance));
+  } else if (ev.type === "sonic") {
+    state.distance = Math.max(0, parseFloat(state.distance) + parseFloat(ev.value.distance));
+  } else if (ev.type === "cles") {
+    state.ferrat = Math.max(0, Math.min(100, state.ferrat + ev.value.moral));
+    state.distance = Math.max(0, parseFloat(state.distance) + parseFloat(ev.value.distance));
   }
 
   const fullText = ev.text + ev.effectText;
   
-  if (["sanglier", "gps", "picodon", "bogue", "source", "cyclistes", "sirop", "drome_tong", "burle", "cochon"].includes(ev.id)) {
+  if (["sanglier", "gps", "picodon", "bogue", "source", "cyclistes", "sirop", "drome_tong", "burle", "cochon", "licorne", "facteur", "bouse", "montgolfiere", "sonic", "cles"].includes(ev.id)) {
     state.pendingCustomEvent = ev.id;
     initAnimatedEvent(fullText, ev.icon);
   } else {
@@ -1962,11 +2056,13 @@ function drawCustomEventScene(frame) {
     ctx.fillStyle = '#ffffff';
     ctx.strokeStyle = '#000';
     ctx.lineWidth = 1;
-    ctx.fillRect(cycX + 15, cycY - 22, 32, 12);
-    ctx.strokeRect(cycX + 15, cycY - 22, 32, 12);
+    ctx.fillRect(cycX + 12, cycY - 22, 38, 12);
+    ctx.strokeRect(cycX + 12, cycY - 22, 38, 12);
     ctx.fillStyle = '#000000';
     ctx.font = '5px "Press Start 2P"';
-    ctx.fillText("Ouf...", cycX + 19, cycY - 14);
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'top';
+    ctx.fillText("Ouf...", cycX + 16, cycY - 18);
 
     // William qui double en marchant tranquillement
     const approach = Math.min(100, frame * 1.5);
@@ -2011,16 +2107,19 @@ function drawCustomEventScene(frame) {
       // Bouteille à la bouche
       ctx.fillStyle = '#9b2226';
       ctx.fillRect(3, -15, 6, 12);
-      
+      ctx.restore();
+
+      // Bulle de texte horizontale (dessinée en dehors du bloc de rotation pour éviter les décalages)
       ctx.fillStyle = '#ffffff';
-      ctx.strokeStyle = '#000';
+      ctx.strokeStyle = '#000000';
       ctx.lineWidth = 1;
-      ctx.fillRect(-45, -35, 45, 12);
-      ctx.strokeRect(-45, -35, 45, 12);
+      ctx.fillRect(wx_s - 30, wy_s + 5, 42, 12);
+      ctx.strokeRect(wx_s - 30, wy_s + 5, 42, 12);
       ctx.fillStyle = '#000000';
       ctx.font = '5px "Press Start 2P"';
-      ctx.fillText("GLOU !", -41, -27);
-      ctx.restore();
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
+      ctx.fillText("GLOU !", wx_s - 25, wy_s + 8);
 
       // Gouttes
       ctx.fillStyle = '#ffd166';
@@ -2071,16 +2170,18 @@ function drawCustomEventScene(frame) {
     ctx.fillStyle = '#e63946';
     ctx.fillRect(dx + 2, wy_dt - 6 + dBob, 16, 4);
 
-    // Dialogue
+    // Dialogue (Bulle agrandie et décalée à gauche pour contenir le texte plus grand)
     ctx.fillStyle = '#ffffff';
     ctx.strokeStyle = '#000000';
     ctx.lineWidth = 1;
-    ctx.fillRect(dx - 65, wy_dt - 35, 75, 25);
-    ctx.strokeRect(dx - 65, wy_dt - 35, 75, 25);
+    ctx.fillRect(dx - 82, wy_dt - 38, 92, 28);
+    ctx.strokeRect(dx - 82, wy_dt - 38, 92, 28);
     ctx.fillStyle = '#000';
-    ctx.font = '4.5px "Press Start 2P"';
-    ctx.fillText("LA CAILLETTE", dx - 61, wy_dt - 29);
-    ctx.fillText("C'EST DROMOIS!", dx - 61, wy_dt - 18);
+    ctx.font = '6px "Press Start 2P"';
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'top';
+    ctx.fillText("LA CAILLETTE", dx - 77, wy_dt - 33);
+    ctx.fillText("C'EST DROMOIS!", dx - 77, wy_dt - 22);
 
     // William à gauche énervé
     const wx_dt = 70;
@@ -2171,8 +2272,10 @@ function drawCustomEventScene(frame) {
       ctx.fillRect(wx_c + 25, wy_c - 30, 80, 22);
       ctx.strokeRect(wx_c + 25, wy_c - 30, 80, 22);
       ctx.fillStyle = '#000000';
-      ctx.font = 'bold 6.5px "Press Start 2P"';
-      ctx.fillText("GROUIIIC!🐖", wx_c + 29, wy_c - 15);
+      ctx.font = '6.5px "Press Start 2P"';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
+      ctx.fillText("GROUIIIC!🐖", wx_c + 30, wy_c - 23);
     }
 
     // Gros Cochon qui arrive de la droite de l'estrade UNIQUEMENT après le cri
@@ -2245,6 +2348,402 @@ function drawCustomEventScene(frame) {
     }
 
     drawTopLeftBadge("Foire : Cri de cochon ! 🐖");
+  } else if (type === 'licorne') {
+    // Fond magique avec étoiles et teintes violettes/roses
+    ctx.fillStyle = '#240046';
+    ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+
+    // Étoiles scintillantes
+    ctx.fillStyle = '#ffffff';
+    for (let i = 0; i < 8; i++) {
+      if ((frame + i * 20) % 30 < 15) {
+        const starX = (i * 45 + frame * 0.5) % CANVAS_WIDTH;
+        const starY = (i * 25 + Math.sin(frame * 0.1 + i) * 10) % 150;
+        ctx.fillRect(starX, starY, 2, 2);
+      }
+    }
+
+    // Montagnes magiques sombres en bas
+    ctx.fillStyle = '#10002b';
+    ctx.beginPath();
+    ctx.moveTo(0, 180);
+    ctx.lineTo(80, 130);
+    ctx.lineTo(160, 180);
+    ctx.lineTo(240, 120);
+    ctx.lineTo(320, 180);
+    ctx.fill();
+
+    ctx.fillStyle = '#3c096c';
+    ctx.fillRect(0, 160, CANVAS_WIDTH, 80);
+
+    // Licorne qui galope
+    const lx = 110;
+    const ly = 100;
+    const lBob = Math.floor(Math.sin(frame * 0.3) * 3);
+
+    // Arc-en-ciel émis par le derrière de la licorne 🌈
+    const colors = ['#ff2a6d', '#ffb703', '#05d9e8', '#01012b', '#ffd166'];
+    ctx.save();
+    for (let r = 0; r < 20; r++) {
+      ctx.fillStyle = colors[(r + Math.floor(frame / 4)) % colors.length];
+      const rx = lx + 45 + r * 3 + Math.sin(frame * 0.2 + r) * 4;
+      const ry = ly + 15 + lBob + Math.cos(frame * 0.15 + r) * 3;
+      if (rx < CANVAS_WIDTH) {
+        ctx.fillRect(rx, ry, 6, 4);
+      }
+    }
+    ctx.restore();
+
+    // Dessin de la licorne blanche
+    ctx.save();
+    ctx.translate(lx, ly + lBob);
+    
+    // Corps
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 5, 45, 20);
+    // Pattes (galop)
+    const legCycle = Math.floor(frame / 5) % 2;
+    ctx.fillStyle = '#ffffff';
+    if (legCycle === 0) {
+      ctx.fillRect(4, 25, 4, 8);
+      ctx.fillRect(12, 25, 4, 6);
+      ctx.fillRect(30, 25, 4, 8);
+      ctx.fillRect(38, 25, 4, 6);
+    } else {
+      ctx.fillRect(4, 25, 4, 6);
+      ctx.fillRect(12, 25, 4, 8);
+      ctx.fillRect(30, 25, 4, 6);
+      ctx.fillRect(38, 25, 4, 8);
+    }
+    // Sabots dorés
+    ctx.fillStyle = '#ffd166';
+    ctx.fillRect(4, 31 + (legCycle === 0 ? 2 : 0), 4, 2);
+    ctx.fillRect(12, 31 + (legCycle === 0 ? 0 : 2), 4, 2);
+    ctx.fillRect(30, 31 + (legCycle === 0 ? 2 : 0), 4, 2);
+    ctx.fillRect(38, 31 + (legCycle === 0 ? 0 : 2), 4, 2);
+
+    // Encolure & Tête
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(-10, 0, 15, 12); // Cou
+    ctx.fillRect(-18, -8, 14, 10); // Tête
+    // Museau
+    ctx.fillStyle = '#ffccd5';
+    ctx.fillRect(-22, -6, 4, 6);
+    // Œil bleu magique
+    ctx.fillStyle = '#00b4d8';
+    ctx.fillRect(-12, -5, 2, 2);
+    // Corne dorée scintillante
+    ctx.fillStyle = '#ffb703';
+    ctx.fill();
+
+    // Crinière et queue rose fuchsia
+    ctx.fillStyle = '#ff2a6d';
+    ctx.fillRect(2, -2, 10, 8);
+    ctx.fillRect(43, 2, 8, 12);
+    ctx.restore();
+
+    // William chevauche la licorne et lui tient la corne !
+    ctx.save();
+    // William est penché en avant sur l'encolure
+    drawWilliam(lx + 8, ly - 22 + lBob, 2.3, frame);
+    // Main de William tenant la corne
+    ctx.fillStyle = COLORS.shirt;
+    ctx.fillRect(lx + 2, ly - 4 + lBob, 8, 3);
+    ctx.restore();
+
+    drawTopLeftBadge("Licorne mythique de l'Ardèche ! 🦄");
+  } else if (type === 'facteur') {
+    // Fond vert sombre très touffu
+    ctx.fillStyle = '#0f201b';
+    ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+
+    // Plein d'arbres touffus superposés
+    ctx.fillStyle = '#1b4332';
+    for (let i = 0; i < 8; i++) {
+      const ax = i * 45 - 10;
+      ctx.fillRect(ax, 100, 15, 120);
+      ctx.fillStyle = '#2d6a4f';
+      ctx.beginPath();
+      ctx.arc(ax + 7, 90, 30, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    // William avance lentement avec difficulté (frame * 0.75)
+    const progress = Math.min(180, frame * 0.75);
+    const wx_f = 20 + progress;
+    const wy_f = 110;
+    const bob = Math.floor(Math.sin(frame * 0.25) * 2);
+    drawWilliam(wx_f, wy_f + bob, 2.5, frame);
+
+    // Dessiner des branches et feuillages devant William
+    ctx.fillStyle = 'rgba(8, 28, 21, 0.9)';
+    // Branches horizontales
+    ctx.fillRect(0, 130, CANVAS_WIDTH, 10);
+    ctx.fillRect(0, 155, CANVAS_WIDTH, 8);
+    
+    // Petits carrés de feuilles volantes
+    ctx.fillStyle = '#40916c';
+    for(let f=0; f<15; f++) {
+      const fx = (f * 25 + frame * 0.4) % CANVAS_WIDTH;
+      const fy = 110 + (f * 7) % 70;
+      ctx.fillRect(fx, fy, 4, 4);
+    }
+
+    // Sueur de William pour montrer la difficulté
+    ctx.fillStyle = '#4cc9f0';
+    ctx.fillRect(wx_f + 14, wy_f - 10 + bob, 2, 3);
+
+    drawTopLeftBadge("William traverse un bois très touffu ! 🌳");
+  } else if (type === 'bouse') {
+    drawBackground();
+    
+    // Bouse de vache au sol
+    ctx.fillStyle = '#7f5539';
+    ctx.beginPath();
+    ctx.ellipse(140, 192, 14, 5, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = '#582f0e';
+    ctx.beginPath();
+    ctx.ellipse(140, 190, 10, 3, 0, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Glissage de William (wy = 145 pour être directement sur le sol)
+    const startSlipFrame = 40;
+    if (frame < startSlipFrame) {
+      const approach = frame * 2.2;
+      drawWilliam(10 + approach, 145, 2.5, frame);
+    } else {
+      const slipProgress = frame - startSlipFrame;
+      const slideX = 10 + startSlipFrame * 2.2 + slipProgress * 4.5;
+      ctx.save();
+      ctx.translate(slideX, 145);
+      ctx.rotate(-0.8); // Jambes en l'air
+      drawWilliam(-15, -15, 2.5, frame, true);
+      ctx.restore();
+
+      // Traits de vitesse
+      ctx.strokeStyle = '#ffffff';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(slideX - 30, 200);
+      ctx.lineTo(slideX - 10, 200);
+      ctx.moveTo(slideX - 45, 195);
+      ctx.lineTo(slideX - 25, 195);
+      ctx.stroke();
+
+      ctx.fillStyle = '#ffb703';
+      ctx.font = 'bold 7px "Press Start 2P"';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
+      ctx.fillText("OUPS!💩", slideX - 35, 100);
+    }
+
+    drawTopLeftBadge("Glissade sur bouse ! 🐄");
+  } else if (type === 'montgolfiere') {
+    // Ciel avec quelques nuages blancs
+    ctx.fillStyle = '#a8dadc';
+    ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+    
+    ctx.fillStyle = '#ffffff';
+    // Nuages
+    ctx.beginPath();
+    ctx.arc(60, 50, 15, 0, Math.PI * 2);
+    ctx.arc(80, 50, 20, 0, Math.PI * 2);
+    ctx.arc(100, 50, 15, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.beginPath();
+    ctx.arc(220, 80, 12, 0, Math.PI * 2);
+    ctx.arc(235, 80, 16, 0, Math.PI * 2);
+    ctx.arc(250, 80, 12, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Collines verdoyantes en bas
+    ctx.fillStyle = '#2a9d8f';
+    ctx.beginPath();
+    ctx.moveTo(0, 240);
+    ctx.quadraticCurveTo(80, 180, 160, 240);
+    ctx.quadraticCurveTo(240, 160, 320, 240);
+    ctx.lineTo(320, 240);
+    ctx.lineTo(0, 240);
+    ctx.fill();
+
+    // Calcul de la trajectoire de la montgolfière
+    const progress = Math.min(180, frame * 1.3);
+    const mx = 40 + progress * 1.1;
+    const my = 150 - progress * 0.6;
+
+    // Ballon de la montgolfière (rayé rouge et jaune)
+    ctx.fillStyle = '#e63946';
+    ctx.beginPath();
+    ctx.arc(mx, my - 25, 20, 0, Math.PI * 2);
+    ctx.fill();
+    
+    // Rayures jaunes
+    ctx.fillStyle = '#ffb703';
+    ctx.beginPath();
+    ctx.ellipse(mx, my - 25, 8, 20, 0, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Cordes
+    ctx.strokeStyle = '#6c757d';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(mx - 10, my - 8);
+    ctx.lineTo(mx - 6, my + 5);
+    ctx.moveTo(mx + 10, my - 8);
+    ctx.lineTo(mx + 6, my + 5);
+    ctx.stroke();
+
+    // Nacelle (Panier en bois)
+    ctx.fillStyle = '#8c5225';
+    ctx.fillRect(mx - 8, my + 5, 16, 12);
+
+    // William qui fait coucou depuis la nacelle !
+    ctx.save();
+    drawWilliam(mx - 15, my - 13, 1.5, frame);
+    ctx.restore();
+
+    drawTopLeftBadge("Montgolfière d'Annonay ! 🎈");
+  } else if (type === 'sonic') {
+    // Décor forêt
+    ctx.fillStyle = '#1b4332';
+    ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+    ctx.fillStyle = '#081c15';
+    ctx.fillRect(0, 160, CANVAS_WIDTH, 80);
+
+    // Arbres d'arrière-plan
+    ctx.fillStyle = '#2d6a4f';
+    for (let i = 0; i < 6; i++) {
+      const ax = i * 60 + 15;
+      ctx.beginPath();
+      ctx.moveTo(ax, 160);
+      ctx.lineTo(ax - 20, 90);
+      ctx.lineTo(ax + 20, 90);
+      ctx.closePath();
+      ctx.fill();
+    }
+
+    // William court derrière Sonic
+    const progress = frame * 2.2;
+    const wx = Math.min(100, progress);
+    const wy = 110;
+    drawWilliam(wx, wy, 2.5, frame);
+
+    // Bulle William "Sonic au pied !"
+    ctx.fillStyle = '#ffffff';
+    ctx.strokeStyle = '#000000';
+    ctx.lineWidth = 1;
+    ctx.fillRect(wx - 25, wy - 30, 95, 14);
+    ctx.strokeRect(wx - 25, wy - 30, 95, 14);
+    ctx.fillStyle = '#000000';
+    ctx.font = '5px "Press Start 2P"';
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'top';
+    ctx.fillText("Sonic au pied !", wx - 20, wy - 26);
+
+    // Sonic, le fidèle chien (court devant) - PLUS GROS !
+    const sx = wx + 55;
+    const sy = wy + 20; // abaissé un peu car plus gros
+    const sBob = Math.floor(Math.sin(frame * 0.4) * 2);
+
+    ctx.save();
+    ctx.translate(sx, sy + sBob);
+
+    // Corps de Sonic (plus gros !)
+    ctx.fillStyle = '#d3a37a';
+    ctx.fillRect(0, 0, 24, 15);
+
+    // Tête
+    ctx.fillRect(16, -9, 12, 12);
+    
+    // Oreilles pointues
+    ctx.fillStyle = '#a37a5c';
+    ctx.beginPath();
+    ctx.moveTo(18, -9);
+    ctx.lineTo(21, -15);
+    ctx.lineTo(24, -9);
+    ctx.fill();
+
+    // Museau et Truffe
+    ctx.fillStyle = '#d3a37a';
+    ctx.fillRect(28, -6, 5, 5);
+    ctx.fillStyle = '#000000';
+    ctx.fillRect(31, -6, 2, 2);
+
+    // Œil
+    ctx.fillRect(20, -6, 2, 2);
+
+    // Queue qui frétille
+    ctx.strokeStyle = '#a37a5c';
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.moveTo(0, 3);
+    ctx.lineTo(-6, -Math.floor(Math.sin(frame * 0.6) * 5));
+    ctx.stroke();
+
+    // Pattes en mouvement
+    ctx.fillStyle = '#a37a5c';
+    const sLegOffset = Math.floor(frame / 4) % 2 === 0 ? 4 : 0;
+    ctx.fillRect(3, 15, 3, 6 - sLegOffset);
+    ctx.fillRect(9, 15, 3, sLegOffset + 2);
+    ctx.fillRect(15, 15, 3, 6 - sLegOffset);
+    ctx.fillRect(21, 15, 3, sLegOffset + 2);
+
+    ctx.restore();
+
+    drawTopLeftBadge("Sonic au pied ! 🐕");
+  } else if (type === 'cles') {
+    drawBackground();
+
+    // Clé perdue dessinée au sol
+    ctx.fillStyle = '#ffb703';
+    ctx.font = '12px serif';
+    ctx.fillText("🔑", 30, 185);
+
+    if (frame < 45) {
+      // William avance tranquillement
+      const wx = 30 + frame * 2.0;
+      drawWilliam(wx, 110, 2.5, frame);
+    } else if (frame < 90) {
+      // Il s'arrête et cherche dans ses poches (secouement)
+      const shake = Math.sin(frame * 1.2) * 2;
+      drawWilliam(120 + shake, 110, 2.5, frame);
+
+      // Points d'interrogation et croix
+      ctx.fillStyle = '#ff3333';
+      ctx.font = 'bold 12px sans-serif';
+      ctx.fillText("❌", 125 + shake, 90);
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 8px "Press Start 2P"';
+      ctx.fillText("?", 145 + shake, 85);
+    } else if (frame < 150) {
+      // Il reste complètement statique pendant exactement 60 frames (1 seconde à 60fps)
+      drawWilliam(120, 110, 2.5, 0); // frame = 0 pour ne pas s'animer (statique)
+
+      // Le message apparaît !
+      ctx.fillStyle = '#ff3333';
+      ctx.font = 'bold 5px "Press Start 2P"';
+      ctx.textAlign = 'center';
+      ctx.fillText("Nom de bleu", 130, 88);
+      ctx.fillText("mes cles !!!", 130, 96);
+    } else {
+      // Il repart en arrière (court vers la gauche paniqué)
+      const runBack = (frame - 150) * 4.5;
+      const wx = Math.max(30, 120 - runBack);
+      ctx.save();
+      ctx.translate(wx + 15, 110);
+      ctx.scale(-1, 1);
+      drawWilliam(-15, 0, 2.5, frame);
+      ctx.restore();
+
+      // Gouttes de panique
+      ctx.fillStyle = '#4cc9f0';
+      ctx.fillRect(wx - 5, 105, 2, 3);
+      ctx.fillRect(wx + 25, 108, 2, 3);
+    }
+
+    drawTopLeftBadge("Où sont passées les clés ?! 🔑");
   }
 }
 
