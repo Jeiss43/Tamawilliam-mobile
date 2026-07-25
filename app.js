@@ -506,19 +506,19 @@ function drawBalDeCoucouron(frame) {
   ctx.strokeRect(10, 150, CANVAS_WIDTH - 20, 82);
 
   ctx.fillStyle = '#ffb703';
-  ctx.font = 'bold 10px "Press Start 2P"';
+  ctx.font = 'bold 8px "Press Start 2P"';
   ctx.textAlign = 'center';
   ctx.fillText("🏆 VICTOIRE ARDECHOISE ! 🏆", Math.round(CANVAS_WIDTH / 2), 168);
   
   ctx.fillStyle = '#ffffff';
-  ctx.font = '8px "Press Start 2P"';
+  ctx.font = '6px "Press Start 2P"';
   ctx.fillText("William danse & boit de la Marquisette au Bal !", Math.round(CANVAS_WIDTH / 2), 185);
-  ctx.fillText("Il a terrassé la caillette drômoise & la Burle !", Math.round(CANVAS_WIDTH / 2), 198);
-  ctx.fillText("La fête bat son plein à Coucouron ! 🍾🎶", Math.round(CANVAS_WIDTH / 2), 211);
+  ctx.fillText("Il a terrasse la caillette dromoise & la Burle !", Math.round(CANVAS_WIDTH / 2), 197);
+  ctx.fillText("La fete bat son plein a Coucouron ! 🍾🎶", Math.round(CANVAS_WIDTH / 2), 209);
   
   ctx.fillStyle = '#e9c46a';
-  ctx.font = '8px "Press Start 2P"';
-  ctx.fillText("APPUYEZ SUR ENTREE POUR REJOUER", Math.round(CANVAS_WIDTH / 2), 226);
+  ctx.font = '6.5px "Press Start 2P"';
+  ctx.fillText("APPUYEZ SUR ENTREE POUR REJOUER", Math.round(CANVAS_WIDTH / 2), 224);
 }
 
 function drawCailletteFlash(frame) {
@@ -2721,12 +2721,20 @@ function drawCustomEventScene(frame) {
       // Il reste complètement statique pendant exactement 60 frames (1 seconde à 60fps)
       drawWilliam(120, 110, 2.5, 0); // frame = 0 pour ne pas s'animer (statique)
 
-      // Le message apparaît !
-      ctx.fillStyle = '#ff3333';
+      // Le message apparaît dans une bulle de dialogue
+      ctx.fillStyle = '#ffffff';
+      ctx.strokeStyle = '#000000';
+      ctx.lineWidth = 1;
+      ctx.fillRect(80, 68, 100, 24);
+      ctx.strokeRect(80, 68, 100, 24);
+
+      ctx.fillStyle = '#000000';
       ctx.font = 'bold 5px "Press Start 2P"';
       ctx.textAlign = 'center';
-      ctx.fillText("Nom de bleu", 130, 88);
-      ctx.fillText("mes cles !!!", 130, 96);
+      ctx.textBaseline = 'top';
+      ctx.fillText("Nom de bleu", 130, 73);
+      ctx.fillText("mes cles !!!", 130, 81);
+      ctx.textBaseline = 'alphabetic'; // reset baseline
     } else {
       // Il repart en arrière (court vers la gauche paniqué)
       const runBack = (frame - 150) * 4.5;
